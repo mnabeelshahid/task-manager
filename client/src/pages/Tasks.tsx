@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 import { tasksApi } from '../api/api';
 import type { Task } from '../types';
 import TasksHeader from '../components/TasksHeader';
 import CreateTaskForm from '../components/CreateTaskForm';
 import TasksList from '../components/TasksList';
+import TasksFilter from '../components/TasksFilter';
 import ErrorMessage from '../components/ErrorMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
 import '../App.css';
+
+export type FilterType = 'all' | 'completed' | 'incomplete';
 
 const TasksPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   useEffect(() => {
     loadTasks();
@@ -49,6 +54,30 @@ const TasksPage: React.FC = () => {
     setError(errorMessage);
   };
 
+  const handleFilterChange = (filter: FilterType) => {
+    setActiveFilter(filter);
+  };
+
+  // Filter tasks based on active filter
+  const filteredTasks = tasks.filter(task => {
+    switch (activeFilter) {
+      case 'completed':
+        return task.completed;
+      case 'incomplete':
+        return !task.completed;
+      case 'all':
+      default:
+        return true;
+    }
+  });
+
+  // Calculate task counts for filter badges
+  const taskCounts = {
+    all: tasks.length,
+    completed: tasks.filter(t => t.completed).length,
+    incomplete: tasks.filter(t => !t.completed).length,
+  };
+
   if (loading) {
     return <LoadingSpinner message="Loading tasks..." />;
   }
@@ -64,8 +93,16 @@ const TasksPage: React.FC = () => {
         onError={setGlobalError}
       />
       
+      <TasksFilter
+        activeFilter={activeFilter}
+        onFilterChange={handleFilterChange}
+        taskCounts={taskCounts}
+      />
+      
       <TasksList 
-        tasks={tasks}
+        tasks={filteredTasks}
+        activeFilter={activeFilter}
+        totalTasks={tasks.length}
         onTaskUpdated={handleTaskUpdated}
         onTaskDeleted={handleTaskDeleted}
         onError={setGlobalError}
