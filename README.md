@@ -56,7 +56,7 @@ A full-stack Task Manager application with a [React](https://reactjs.org/) clien
     ```sh
     npm run dev
     ```
-   The client will run on [http://localhost:3000](http://localhost:3000) by default.
+   The client will run on [http://localhost:5173](http://localhost:5173) by default.
 
 ## API Endpoints
 
