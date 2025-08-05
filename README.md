@@ -2,6 +2,14 @@
 
 A full-stack Task Manager application with a [React](https://reactjs.org/) client built using [Vite](https://vitejs.dev/) and a [Node.js Express](https://expressjs.com/) server.
 
+
+
+Sample Screenshots
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
 ## Table of Contents
 - [Features](#features)
 - [Architecture](#architecture)
@@ -81,3 +89,4 @@ For more details, refer to `server/routes/manage.route.js`.
 ## License
 
 This project is licensed under the MIT License.
+
